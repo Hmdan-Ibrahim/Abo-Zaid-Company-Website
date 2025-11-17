@@ -1,16 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useLanguage } from '@/lib/language-context'
 import { translations } from '@/lib/translations'
 import LanguageToggle from './language-toggle'
 
-interface NavbarProps {
-  isScrolled: boolean
-}
 
-export default function Navbar({ isScrolled }: NavbarProps) {
+export default function Navbar() {
+    const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
   const [mobileOpen, setMobileOpen] = useState(false)
   const { language } = useLanguage()
   const t = translations[language]
